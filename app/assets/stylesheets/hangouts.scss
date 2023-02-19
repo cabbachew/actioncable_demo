@@ -1,0 +1,11 @@
+#message-display {
+  height: 60vh;
+  border: 1px solid #ccc;
+  overflow: auto;
+  width: 100%;
+}
+
+.field > :nth-child(1),
+.field > :nth-child(1) > :nth-child(1){
+  width: 100%;
+}
