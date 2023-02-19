@@ -69,4 +69,4 @@ gem "devise", "~> 4.8"
 
 gem "bulma-rails", "~> 0.9.4"
 
-gem "hotwire-livereload", "~> 1.2"
+# gem "hotwire-livereload", "~> 1.2"
