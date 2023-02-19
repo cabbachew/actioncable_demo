@@ -3,6 +3,16 @@
 
 <div>
   <div id="message-display">
+    <% @messages.each do |message| %>
+      <article class="message">
+        <div class="message-header">
+          <%# Eagerly load associated users in controller to prevent N+1 query problem %>
+          <%= message.user.email %> 
+        </div>
+        <div class="message-body">
+          <%= message.body %>
+      </article>
+    <% end %>
   </div>
   <div id="message-form">
     <%= form_with model: @message, local: false do |f| %>
