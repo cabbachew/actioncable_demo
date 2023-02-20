@@ -1,8 +1,6 @@
 class MessagesController < ApplicationController
   def create
     @message = current_user.messages.build(message_params)
-    @message.save
-
     respond_to do |format|
       if @message.save
         # A json object needed to send data to the client through the websocket server
