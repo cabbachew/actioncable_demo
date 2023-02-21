@@ -16,12 +16,6 @@ const messageChannel = consumer.subscriptions.create("MessageChannel", {
 
     // Scroll to the last message
     messageDisplay.scrollTop = messageDisplay.scrollHeight;
-    
-    // Clear the input field only for sender
-    const senderEmail = document.querySelector('#message-input').getAttribute('data-current-email')
-    if (data.user.email == senderEmail) {
-      document.querySelector('#message-input').value = ''
-    }
   },
 
   template(data) {
@@ -36,14 +30,14 @@ const messageChannel = consumer.subscriptions.create("MessageChannel", {
   }
 });
 
-  // Scroll to the last message when the page loads
-  window.addEventListener("load", function() {
-    var messageDisplay = document.getElementById("message-display");
-    // scrollTop means the distance from the top of the element to the top of the visible area
-    // scrollHeight means the height of the element's content, including content not visible on the screen due to overflow
-    // So, when the page loads, we set the scrollTop to the scrollHeight, which means we scroll to the bottom of the element
-    messageDisplay.scrollTop = messageDisplay.scrollHeight;
-  });
+// Scroll to the last message when the page loads
+// window.addEventListener("load", function() {
+//   var messageDisplay = document.getElementById("message-display");
+//   // scrollTop means the distance from the top of the element to the top of the visible area
+//   // scrollHeight means the height of the element's content, including content not visible on the screen due to overflow
+//   // So, when the page loads, we set the scrollTop to the scrollHeight, which means we scroll to the bottom of the element
+//   messageDisplay.scrollTop = messageDisplay.scrollHeight;
+// });
 
 // Directly send user input to the channel
 

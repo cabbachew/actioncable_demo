@@ -34,17 +34,31 @@ end
 
 A few quality of life tweaks to the client-side JavaScript to clear the input on submission and scrolling to the bottom of the messages in the display div on page load as well as when messages are sent/received would enhance the experience of putting together this neat messaging app. 
 
-_NOTE: In the implementation below, I passed the current user's email as a data attribute on the input field. This is not the best way to do this, but it was the most direct way I could think of to get the current user's email in the `received` method of the `MessageChannel` class. It would be better to clear the input when the submit button is clicked, but I will return to that when I can._
+_NOTE: In the implementation below, I created a Stimulus controller to clear the input field on submission. You may want to review the markup in `apps/views/hangouts/index.html.erb` where the `data-controller`, `data-action`, and `data-message-target` attributes are being added to the form. The `turbo:submit-end` event is necessary because relying on the `submit` or `click` events will clear the input before the message is sent to the server. Notice that, because messages are being persisted, the stimulus controller scrolls to the bottom of the message display on page load. From there, the scrolling is handled by the `received` method in the client-side `message_channel.js`._
+
 
 #### Possible Implementation
-```rb
-# app/views/hangouts/index.html.erb
+```js
+// app/javascript/controllers/message_controller.js
 
-...
+import { Controller } from "@hotwired/stimulus"
 
-<%= f.text_field :body, id: 'message-input', class: 'input', data: { current_email: current_user.email } %>
+export default class extends Controller {
+  static targets = [ "input", "display" ]
 
-...
+  connect() {
+    console.log("Hello, Stimulus!", this.inputTarget)
+    this.scrollToBottom()
+  }
+
+  clearInput() {
+    this.inputTarget.value = ''
+  }
+
+  scrollToBottom() {
+    this.displayTarget.scrollTop = this.displayTarget.scrollHeight;
+  }
+}
 
 ```
 
@@ -61,20 +75,8 @@ const messageChannel = consumer.subscriptions.create("MessageChannel", {
 
     // Scroll to the last message
     messageDisplay.scrollTop = messageDisplay.scrollHeight;
-    
-    // Clear the input field only for sender
-    const senderEmail = document.querySelector('#message-input').getAttribute('data-current-email')
-    if (data.user.email == senderEmail) {
-      document.querySelector('#message-input').value = ''
-    }
-  }
-
+  },
   ...
 
-});
-
-window.addEventListener("load", function() {
-  var messageDisplay = document.getElementById("message-display");
-  messageDisplay.scrollTop = messageDisplay.scrollHeight;
 });
 ```

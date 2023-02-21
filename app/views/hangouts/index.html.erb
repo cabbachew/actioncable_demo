@@ -1,8 +1,8 @@
 <div class="title">The Hangout</div>
 <div class="subtitle">say hello!</div>
 
-<div>
-  <div id="message-display">
+<div data-controller="message">
+  <div id="message-display" data-message-target="display">
     <% @messages.each do |message| %>
       <article class="message">
         <div class="message-header">
@@ -15,10 +15,10 @@
     <% end %>
   </div>
   <div id="message-form">
-    <%= form_with model: @message, local: false do |f| %>
+    <%= form_with(model: @message, local: false, data: { action: "turbo:submit-end->message#clearInput"} ) do |f| %>
       <div class="field has-addons">
         <div class="control">
-          <%= f.text_field :body, id: 'message-input', class: 'input', data: { current_email: current_user.email } %>
+          <%= f.text_field :body, id: 'message-input', class: 'input', data: { message_target: "input" } %>
         </div>
         <div class="control">
           <%= f.submit 'Send Message', class: 'button is-primary' %>
