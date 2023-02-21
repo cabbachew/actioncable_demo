@@ -34,7 +34,20 @@ end
 
 A few quality of life tweaks to the client-side JavaScript to clear the input on submission and scrolling to the bottom of the messages in the display div on page load as well as when messages are sent/received would enhance the experience of putting together this neat messaging app. 
 
+_NOTE: In the implementation below, I passed the current user's email as a data attribute on the input field. This is not the best way to do this, but it was the most direct way I could think of to get the current user's email in the `received` method of the `MessageChannel` class. It would be better to clear the input when the submit button is clicked, but I will return to that when I can._
+
 #### Possible Implementation
+```rb
+# app/views/hangouts/index.html.erb
+
+...
+
+<%= f.text_field :body, id: 'message-input', class: 'input', data: { current_email: current_user.email } %>
+
+...
+
+```
+
 ```js
 // app/javascript/channels/message_channel.js
 
@@ -48,7 +61,12 @@ const messageChannel = consumer.subscriptions.create("MessageChannel", {
 
     // Scroll to the last message
     messageDisplay.scrollTop = messageDisplay.scrollHeight;
-    document.querySelector('#message-input').value = ''
+    
+    // Clear the input field only for sender
+    const senderEmail = document.querySelector('#message-input').getAttribute('data-current-email')
+    if (data.user.email == senderEmail) {
+      document.querySelector('#message-input').value = ''
+    }
   }
 
   ...

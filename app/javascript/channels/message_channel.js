@@ -16,8 +16,12 @@ const messageChannel = consumer.subscriptions.create("MessageChannel", {
 
     // Scroll to the last message
     messageDisplay.scrollTop = messageDisplay.scrollHeight;
-    // Clear the input
-    document.querySelector('#message-input').value = ''
+    
+    // Clear the input field only for sender
+    const senderEmail = document.querySelector('#message-input').getAttribute('data-current-email')
+    if (data.user.email == senderEmail) {
+      document.querySelector('#message-input').value = ''
+    }
   },
 
   template(data) {

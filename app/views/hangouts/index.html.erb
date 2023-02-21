@@ -18,7 +18,7 @@
     <%= form_with model: @message, local: false do |f| %>
       <div class="field has-addons">
         <div class="control">
-          <%= f.text_field :body, id: 'message-input', class: 'input' %>
+          <%= f.text_field :body, id: 'message-input', class: 'input', data: { current_email: current_user.email } %>
         </div>
         <div class="control">
           <%= f.submit 'Send Message', class: 'button is-primary' %>
